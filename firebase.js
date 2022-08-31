@@ -6,12 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCG6RLXWZJcXBkhL1qE5yEHkoDR15qoUCQ",
-  authDomain: "ggchat-f307f.firebaseapp.com",
-  projectId: "ggchat-f307f",
-  storageBucket: "ggchat-f307f.appspot.com",
-  messagingSenderId: "1091659122353",
-  appId: "1:1091659122353:web:2c5de2b3f992e496a04490"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 // Initialize Firebase

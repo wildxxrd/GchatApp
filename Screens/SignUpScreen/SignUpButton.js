@@ -1,11 +1,9 @@
 import { StyleSheet, View, Button } from "react-native";
-import { StatusBar } from "expo-status-bar";
 
 const SignUpButton = (text) => {
   return (
     <View>
       <Button style={style.container}  title="Sign Up" />
-      <StatusBar style="auto" />
     </View>
   );
 };

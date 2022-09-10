@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should first 1`] = `
+<View>
+  <Image
+    source={
+      {
+        "testUri": "../../../assets/logo.jpg",
+      }
+    }
+    style={
+      {
+        "alignItems": "center",
+        "height": 275,
+        "justifyContent": "center",
+        "marginBottom": 20,
+        "marginLeft": 30,
+        "width": 250,
+      }
+    }
+  />
+  <Text
+    style={
+      {
+        "fontFamily": "Baskerville-SemiBold",
+        "fontSize": 30,
+        "fontWeight": "bold",
+        "marginHorizontal": 20,
+      }
+    }
+  >
+    Sign Up with Email
+    
+
+    
+
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#3D8361",
+        "fontFamily": "Baskerville-SemiBold",
+        "fontSize": 16,
+      }
+    }
+  >
+    Full Name
+  </Text>
+  <View>
+    <TextInput
+      placeholder="Enter a name"
+      placeholderTextColor="black"
+      style={
+        {
+          "backgroundColor": "#DFDFDE",
+          "borderRadius": 10,
+          "height": 40,
+          "margin": 12,
+          "padding": 10,
+          "width": 300,
+        }
+      }
+    />
+  </View>
+  <Text
+    style={
+      {
+        "color": "#3D8361",
+        "fontFamily": "Baskerville-SemiBold",
+        "fontSize": 16,
+      }
+    }
+  >
+    Email Address
+  </Text>
+  <View>
+    <TextInput
+      placeholder="Enter your email address"
+      placeholderTextColor="black"
+      style={
+        {
+          "backgroundColor": "#DFDFDE",
+          "borderRadius": 10,
+          "height": 40,
+          "margin": 12,
+          "padding": 10,
+          "width": 300,
+        }
+      }
+    />
+  </View>
+  <Text
+    style={
+      {
+        "color": "#3D8361",
+        "fontFamily": "Baskerville-SemiBold",
+        "fontSize": 16,
+      }
+    }
+  >
+    Password
+  </Text>
+  <View>
+    <TextInput
+      placeholder="Enter your password"
+      placeholderTextColor="black"
+      style={
+        {
+          "backgroundColor": "#DFDFDE",
+          "borderRadius": 10,
+          "height": 40,
+          "margin": 12,
+          "padding": 10,
+          "width": 300,
+        }
+      }
+    />
+  </View>
+  <View>
+    <View
+      accessibilityRole="button"
+      accessible={true}
+      collapsable={false}
+      focusable={false}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Sign Up
+        </Text>
+      </View>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "fontFamily": "Baskerville",
+        "fontSize": 16,
+        "marginHorizontal": 100,
+      }
+    }
+  >
+    
+
+    
+
+    Already registered? 
+    <Text
+      style={
+        {
+          "color": "#277BC0",
+          "fontFamily": "Baskerville",
+          "fontSize": 16,
+        }
+      }
+    >
+      Login
+    </Text>
+  </Text>
+</View>
+`;

@@ -5,14 +5,14 @@ import { StatusBar } from 'expo-status-bar';
 const SignUpInputField =(text) => {
   return (
     <View>
-    <TextInput style={styles.input} placeholder={text.name}></TextInput>
+    <TextInput style={styles.input} placeholderTextColor='black' placeholder={text.placeHolderText}/>
     <StatusBar style="auto" />
     </View>
   )
 }
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: '#DFDFDE',
     height: 40,
     width: 300,
     margin: 12,

@@ -1,12 +1,10 @@
 
 import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 
 const SignUpInputField =(text) => {
   return (
     <View>
     <TextInput style={styles.input} placeholderTextColor='black' placeholder={text.placeHolderText}/>
-    <StatusBar style="auto" />
     </View>
   )
 }

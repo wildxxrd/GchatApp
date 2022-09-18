@@ -9,7 +9,7 @@ const SignUpScreenMain = () => {
 
   return (
     <View>
-      <Image style={style.img} source={require("../../assets/logo.jpg")} />
+      <Image style={style.img} source={require("../../../assets/logo.jpg")} />
       <Text style={style.titleText}>
         {signUpTitleText}
         {"\n"}

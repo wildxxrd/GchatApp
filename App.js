@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
-import SignUpScreenMain from "./Screens/SignUpScreen/SignUpScreenMain";
+import SignUpScreenMain from "./Screens/SignUpScreen/SignUp/SignUpScreenMain";
 
 export default function App() {
   //this return statement is just an example of how we can re use the same component

@@ -1,7 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SignUpButton from './Screens/SignUpScreen/SignUpButton';
-import SignUpScreenMain from './Screens/SignUpScreen/SignUpScreenMain';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import { createAppContainer } from "react-navigation";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+// Screens
+import SignUpScreenMain from "./Screens/SignUpScreen/SignUp/SignUpScreenMain";
+
+const screens = {
+  signUp: {
+    screen: SignUpScreenMain,
+  },
+};
 
 export default function App() {
   //this return statement is just an example of how we can re use the same component
@@ -15,8 +25,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

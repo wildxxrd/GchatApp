@@ -1,40 +1,33 @@
 import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 import SignUpInputField from "./SignUpSignInInputField";
 import SignUpButton from "./SignUpButton";
+import SignUpLoginButton from "./SignUpLoginButton";
 
 const SignUpScreenMain = () => {
   const signUpTitleText = "Sign Up with Email";
   const registerText = "Already registered? ";
-  const loginText = "Login";
 
   return (
     <View>
-      <Image style={style.img} source={require("../../assets/logo.jpg")} />
+      <Image style={style.img} source={require("../../../assets/logo.jpg")} />
       <Text style={style.titleText}>
         {signUpTitleText}
         {"\n"}
         {"\n"}
       </Text>
-      <Text style={style.inputText}>
-        {"Full Name"}
-      </Text>
+      <Text style={style.inputText}>{"Full Name"}</Text>
       <SignUpInputField placeHolderText="Enter a name" />
-      <Text style={style.inputText}>
-        {"Email Address"}
-      </Text>
+      <Text style={style.inputText}>{"Email Address"}</Text>
       <SignUpInputField placeHolderText="Enter your email address" />
-      <Text style={style.inputText}>
-        {"Password"}
-      </Text>
+      <Text style={style.inputText}>{"Password"}</Text>
       <SignUpInputField placeHolderText="Enter your password" />
       <SignUpButton />
       <Text style={style.footerText}>
         {"\n"}
         {"\n"}
         {registerText}
-        <Text style={style.loginText}>
-        {loginText}
-        </Text>
+        <SignUpLoginButton />
+        <Text style={style.loginText}></Text>
       </Text>
     </View>
   );
@@ -61,7 +54,7 @@ const style = StyleSheet.create({
     fontFamily: "Baskerville-SemiBold",
   },
   loginText: {
-    color: '#277BC0',
+    color: "#277BC0",
     fontSize: 16,
     fontFamily: "Baskerville",
   },

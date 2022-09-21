@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import { firebase } from "../../config";
 
+
 const SignInMainScreen = ({ navigation }) => {
   const signInTitleText = "Log in to your account";
   const signUpFooterText = "New To GGChat?  ";
@@ -24,41 +25,46 @@ const SignInMainScreen = ({ navigation }) => {
   };
   return (
     <View>
-      <Image style={style.img} source={require("../../assets/logo.jpg")} />
-      <Text style={style.titleText}>{signInTitleText}</Text>
-      <View>
-        <TextInput
-          style={style.input}
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Email"
-          onChangeText={(email) => setEmail(email)}
-        />
-        <TextInput
-          style={style.input}
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Password"
-          onChangeText={(password) => setPassword(password)}
-          secureTextEntry={true}
-        />
-      </View>
-      <TouchableOpacity onPress={() => loginUser(email, password)}>
-        <Text style={style.logInButton}>Log In</Text>
-      </TouchableOpacity>
-      <Text style={style.footerText}>
-        {signUpFooterText}
-        <TouchableOpacity onPress={() => navigation.navigate("Sign Up")}>
-          <Text style={style.signUpText}>Sign Up</Text>
+      <View style={style.container}>
+        <Image style={style.img} source={require("../../assets/ggc_logo.png")} />
+        <Text style={style.titleText}>{signInTitleText}</Text>
+        <View>
+          <TextInput
+            style={style.input}
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Email"
+            onChangeText={(email) => setEmail(email)}
+          />
+          <TextInput
+            style={style.input}
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Password"
+            onChangeText={(password) => setPassword(password)}
+            secureTextEntry={true}
+          />
+        </View>
+        <TouchableOpacity onPress={() => loginUser(email, password)}>
+          <Text style={style.logInButton}>Log In</Text>
         </TouchableOpacity>
-      </Text>
+        <Text style={style.footerText}>
+          {signUpFooterText}
+          <TouchableOpacity onPress={() => navigation.navigate("Sign Up")}>
+            <Text style={style.signUpText}>Sign Up</Text>
+          </TouchableOpacity>
+        </Text>
+      </View>
     </View>
   );
 };
 
 const style = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
   titleText: {
     fontSize: 30,
     marginHorizontal: 20,
@@ -76,7 +82,7 @@ const style = StyleSheet.create({
   input: {
     backgroundColor: "#DFDFDE",
     height: 40,
-    width: 300,
+    width: 400,
     margin: 12,
     padding: 10,
     borderRadius: 10,

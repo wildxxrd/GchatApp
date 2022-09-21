@@ -50,8 +50,8 @@ const SignUpScreenMain = ({ navigation }) => {
   const registerText = "Already registered? ";
 
   return (
-    <View>
-      <Image style={style.img} source={require("../../../assets/logo.jpg")} />
+    <View style={style.container}>
+      <Image style={style.img} source={require("../../../assets/ggc_logo.png")} />
       <Text style={style.titleText}>{signUpTitleText}</Text>
       <View>
         <TextInput
@@ -104,6 +104,9 @@ const SignUpScreenMain = ({ navigation }) => {
 };
 
 const style = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+  },
   img: {
     justifyContent: "center",
     alignItems: "center",
@@ -121,7 +124,7 @@ const style = StyleSheet.create({
   input: {
     backgroundColor: "#DFDFDE",
     height: 40,
-    width: 300,
+    width: 400,
     margin: 12,
     padding: 10,
     borderRadius: 10,

@@ -56,7 +56,7 @@ const SignUpScreenMain = ({ navigation }) => {
       <View>
         <TextInput
           style={style.input}
-          placeholder="first Name"
+          placeholder="First Name"
           placeholderTextColor="black"
           onChangeText={(firstName) => setFirstName(firstName)}
           autoCorrect={false}
@@ -79,7 +79,7 @@ const SignUpScreenMain = ({ navigation }) => {
         />
         <TextInput
           style={style.input}
-          placeholder="Passord"
+          placeholder="Password"
           placeholderTextColor="black"
           onChangeText={(password) => setPassword(password)}
           autoCorrect={false}

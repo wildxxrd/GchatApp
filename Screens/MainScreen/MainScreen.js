@@ -17,7 +17,7 @@ import SettingsButton from "../Icons/SettingsButton";
 import { FlatList } from "react-native-gesture-handler";
 
 const MainScreen = () => {
-  const postRef = firebase.firestore().collection("posts").orderBy('createdBy', 'desc');
+  const postRef = firebase.firestore().collection("posts");
   const [addPost, setAddPost] = useState("");
   const [userPosts, setUserPosts] = useState([]);
   //add a new post
@@ -42,9 +42,11 @@ const MainScreen = () => {
       });
   };
 
+  const fetchRef = firebase.firestore().collection("posts").orderBy('createdBy', 'desc');
+  
   useEffect(() => {
     async function fetchFireStore() {
-      postRef.onSnapshot((querySnapshot) => {
+      fetchRef.onSnapshot((querySnapshot) => {
         const allPosts = [];
         querySnapshot.forEach((doc) => {
           const { posts } = doc.data();

@@ -126,7 +126,6 @@ const style = StyleSheet.create({
     fontSize: 30,
     marginHorizontal: 20,
     fontWeight: "bold",
-    fontFamily: "Baskerville-SemiBold",
   },
   input: {
     backgroundColor: "#06283D",
@@ -141,18 +140,15 @@ const style = StyleSheet.create({
     marginHorizontal: 170,
     color: "#47B5FF",
     fontSize: 20,
-    fontFamily: "Baskerville-Bold",
   },
   loginText: {
     color: "#47B5FF",
     fontSize: 20,
-    fontFamily: "Baskerville-Bold",
   },
   footerText: {
     color: "#fff",
     marginHorizontal: 100,
     fontSize: 20,
-    fontFamily: "Baskerville",
   },
 });
 

@@ -74,7 +74,6 @@ const style = StyleSheet.create({
     fontSize: 30,
     marginHorizontal: 20,
     fontWeight: "bold",
-    fontFamily: "Baskerville-SemiBold",
   },
   img: {
     justifyContent: "center",
@@ -109,13 +108,11 @@ const style = StyleSheet.create({
   signUpText: {
     color: "#47B5FF",
     fontSize: 18,
-    fontFamily: "Baskerville-Bold",
   },
   footerText: {
     color: "#fff",
     marginHorizontal: 100,
     fontSize: 18,
-    fontFamily: "Baskerville",
   },
 });
 

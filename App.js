@@ -28,7 +28,7 @@ function MyStack() {
 
   if (!user) {
     return (
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Sign Up" component={SignUpScreenMain} />
         <Stack.Screen name="Sign In" component={SignInMainScreen} />
       </Stack.Navigator>
@@ -36,7 +36,7 @@ function MyStack() {
   }
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={MainScreen} />
     </Stack.Navigator>
   );

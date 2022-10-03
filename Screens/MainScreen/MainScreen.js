@@ -8,6 +8,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { firebase } from "../../config";
 import HamburgerButton from "../Icons/HamburgerButton";
@@ -15,6 +16,7 @@ import PostButton from "../Icons/PostButton";
 import Refreshbutton from "../Icons/RefreshButton";
 import SettingsButton from "../Icons/SettingsButton";
 import { FlatList } from "react-native-gesture-handler";
+import ThumbsUp from "../Icons/ThumbsUp";
 
 const MainScreen = () => {
   const postRef = firebase.firestore().collection("posts");
@@ -27,7 +29,7 @@ const MainScreen = () => {
     const data = {
       posts: addPost,
       createdAt: timeStamp,
-      createdBy: firebase.auth().currentUser.email
+      createdBy: firebase.auth().currentUser.email,
     };
     postRef
       .add(data)
@@ -42,8 +44,11 @@ const MainScreen = () => {
       });
   };
 
-  const fetchRef = firebase.firestore().collection("posts").orderBy('createdBy', 'desc');
-  
+  const fetchRef = firebase
+    .firestore()
+    .collection("posts")
+    .orderBy("createdAt", "desc");
+
   useEffect(() => {
     async function fetchFireStore() {
       fetchRef.onSnapshot((querySnapshot) => {
@@ -80,33 +85,44 @@ const MainScreen = () => {
       </View>
       <View style={styles.userInput}>
         <TextInput
+          style={{ fontSize: 20, color: "#DFF6FF" }}
           onChangeText={(userText) => setAddPost(userText)}
           placeholder="What's on your mind?"
           value={addPost}
           multiline={false}
+          placeholderTextColor="#DFF6FF"
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
       </View>
       <FlatList
-        style={{ marginHorizontal: 20, maxHeight: 450,  }}
+        style={{ marginHorizontal: 20, maxHeight: 490 }}
         data={userPosts}
         numColumns={1}
         renderItem={({ item }) => (
-          <Pressable style={styles.container}>
-            <View style={styles.innerContainer}>
-              <Text style={styles.itemText}>{item.posts}</Text>
-            </View>
-          </Pressable>
+          <LinearGradient colors={["#04337A", "#DFF6FF"]}>
+            <Pressable style={styles.container}>
+              <View style={styles.textContainer}>
+                <Text style={styles.itemText}>{item.posts}</Text>
+              </View>
+            </Pressable>
+          </LinearGradient>
         )}
       />
       <View style={styles.bottomContainer}>
-        <View style={styles.bottomView}>
-          <TouchableOpacity onPress={addField}>
-            <PostButton />
-          </TouchableOpacity>
-          <Refreshbutton />
-        </View>
+        <LinearGradient colors={["#04337A", "white"]}>
+          <View style={styles.bottomView}>
+            <TouchableOpacity onPress={addField}>
+              <PostButton />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Refreshbutton />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <ThumbsUp />
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
       </View>
     </SafeAreaView>
   );
@@ -118,13 +134,16 @@ const styles = StyleSheet.create({
     borderRadius: 400 / 2,
   },
   container: {
-    backgroundColor: "#e5e5e5",
-    padding: 15,
-    borderRadius: 15,
+    padding: 20,
     margin: 5,
     marginHorizontal: 5,
   },
+  textContainer: {
+    marginVertical: 10,
+  },
   itemText: {
+    padding: 5,
+    fontSize: 20,
     fontWeight: "300",
   },
   topContainer: {
@@ -137,7 +156,7 @@ const styles = StyleSheet.create({
   },
   middleViewText: {
     fontWeight: "400",
-    fontSize: 20,
+    fontSize: 25,
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
@@ -151,7 +170,7 @@ const styles = StyleSheet.create({
   userInput: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#DFDFDE",
+    backgroundColor: "#000000",
     height: 40,
     width: 350,
     marginHorizontal: 30,
@@ -161,7 +180,6 @@ const styles = StyleSheet.create({
   textDisplay: {
     padding: 20,
     fontSize: 16,
-    color: "blue",
   },
   bottomContainer: {
     flex: 1,
@@ -169,8 +187,10 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-around",
     marginHorizontal: 10,
+    height: 80,
   },
 });
 

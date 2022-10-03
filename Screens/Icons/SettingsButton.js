@@ -4,7 +4,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 const SettingsButton = (text) => {
   return (
     <View>
-      <SimpleLineIcons name="settings" size={30}/>
+      <SimpleLineIcons name="settings" size={50}/>
     </View>
   );
 };

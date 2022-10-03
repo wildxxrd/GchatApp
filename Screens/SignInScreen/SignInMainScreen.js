@@ -9,7 +9,6 @@ import {
 import React, { useState } from "react";
 import { firebase } from "../../config";
 
-
 const SignInMainScreen = ({ navigation }) => {
   const signInTitleText = "Log in to your account";
   const signUpFooterText = "New To GGChat?  ";
@@ -26,12 +25,15 @@ const SignInMainScreen = ({ navigation }) => {
   return (
     <View>
       <View style={style.container}>
-        <Image style={style.img} source={require("../../assets/ggc_logo.png")} />
+        <Image
+          style={style.img}
+          source={require("../../assets/ggc_logo.png")}
+        />
         <Text style={style.titleText}>{signInTitleText}</Text>
         <View>
           <TextInput
             style={style.input}
-            placeholderTextColor="black"
+            placeholderTextColor="#DFF6FF"
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="Email"
@@ -39,7 +41,7 @@ const SignInMainScreen = ({ navigation }) => {
           />
           <TextInput
             style={style.input}
-            placeholderTextColor="black"
+            placeholderTextColor="#DFF6FF"
             autoCapitalize="none"
             autoCorrect={false}
             placeholder="Password"
@@ -63,9 +65,12 @@ const SignInMainScreen = ({ navigation }) => {
 
 const style = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
+    backgroundColor: "#000000",
+    height: "100%",
   },
   titleText: {
+    color: "#47B5FF",
     fontSize: 30,
     marginHorizontal: 20,
     fontWeight: "bold",
@@ -76,11 +81,13 @@ const style = StyleSheet.create({
     alignItems: "center",
     marginLeft: 60,
     marginBottom: 20,
-    width: 250,
+    marginTop: 40,
+    width: 255,
     height: 275,
   },
   input: {
-    backgroundColor: "#DFDFDE",
+    backgroundColor: "#256D85",
+    color: "#DFF6FF",
     height: 40,
     width: 400,
     margin: 12,
@@ -88,11 +95,10 @@ const style = StyleSheet.create({
     borderRadius: 10,
   },
   logInButton: {
-    backgroundColor: "#277BC0",
+    backgroundColor: "#47B5FF",
     marginHorizontal: 120,
-    color: "white",
+    color: "#06283D",
     fontWeight: "bold",
-    fontFamily: "Baskerville-SemiBold",
     fontSize: 25,
     width: 100,
     height: 50,
@@ -101,11 +107,12 @@ const style = StyleSheet.create({
     borderRadius: 30,
   },
   signUpText: {
-    color: "#277BC0",
+    color: "#47B5FF",
     fontSize: 18,
     fontFamily: "Baskerville-Bold",
   },
   footerText: {
+    color: "#fff",
     marginHorizontal: 100,
     fontSize: 18,
     fontFamily: "Baskerville",

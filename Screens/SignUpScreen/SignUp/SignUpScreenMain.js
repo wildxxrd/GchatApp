@@ -51,27 +51,30 @@ const SignUpScreenMain = ({ navigation }) => {
 
   return (
     <View style={style.container}>
-      <Image style={style.img} source={require("../../../assets/ggc_logo.png")} />
+      <Image
+        style={style.img}
+        source={require("../../../assets/ggc_logo.png")}
+      />
       <Text style={style.titleText}>{signUpTitleText}</Text>
       <View>
         <TextInput
           style={style.input}
           placeholder="First Name"
-          placeholderTextColor="black"
+          placeholderTextColor="#DFF6FF"
           onChangeText={(firstName) => setFirstName(firstName)}
           autoCorrect={false}
         />
         <TextInput
           style={style.input}
           placeholder="Last Name"
-          placeholderTextColor="black"
+          placeholderTextColor="#DFF6FF"
           onChangeText={(lastName) => setLastName(lastName)}
           autoCorrect={false}
         />
         <TextInput
           style={style.input}
           placeholder="Email"
-          placeholderTextColor="black"
+          placeholderTextColor="#DFF6FF"
           onChangeText={(email) => setEmail(email)}
           autoCorrect={false}
           autoCapitalize="none"
@@ -80,7 +83,7 @@ const SignUpScreenMain = ({ navigation }) => {
         <TextInput
           style={style.input}
           placeholder="Password"
-          placeholderTextColor="black"
+          placeholderTextColor="#DFF6FF"
           onChangeText={(password) => setPassword(password)}
           autoCorrect={false}
           autoCapitalize="none"
@@ -105,24 +108,29 @@ const SignUpScreenMain = ({ navigation }) => {
 
 const style = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    height: "100%",
+    alignItems: "center",
+    backgroundColor: "#000000",
   },
   img: {
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 60,
     marginBottom: 20,
-    width: 250,
+    marginTop: 40,
+    width: 255,
     height: 275,
   },
   titleText: {
+    color: "#47B5FF",
     fontSize: 30,
     marginHorizontal: 20,
     fontWeight: "bold",
     fontFamily: "Baskerville-SemiBold",
   },
   input: {
-    backgroundColor: "#DFDFDE",
+    backgroundColor: "#06283D",
+    color: "#DFF6FF",
     height: 40,
     width: 400,
     margin: 12,
@@ -131,16 +139,17 @@ const style = StyleSheet.create({
   },
   signUpText: {
     marginHorizontal: 170,
-    color: "#277BC0",
+    color: "#47B5FF",
     fontSize: 20,
     fontFamily: "Baskerville-Bold",
   },
   loginText: {
-    color: "#277BC0",
+    color: "#47B5FF",
     fontSize: 20,
     fontFamily: "Baskerville-Bold",
   },
   footerText: {
+    color: "#fff",
     marginHorizontal: 100,
     fontSize: 20,
     fontFamily: "Baskerville",

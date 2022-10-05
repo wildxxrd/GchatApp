@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   Pressable,
+  Button,
+  Touchable,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -17,11 +19,70 @@ import Refreshbutton from "../Icons/RefreshButton";
 import SettingsButton from "../Icons/SettingsButton";
 import { FlatList } from "react-native-gesture-handler";
 import ThumbsUp from "../Icons/ThumbsUp";
+import AddButton from "../Icons/AddButton";
+import * as ImagePicker from 'expo-image-picker';
 
 const MainScreen = () => {
+
   const postRef = firebase.firestore().collection("posts");
   const [addPost, setAddPost] = useState("");
   const [userPosts, setUserPosts] = useState([]);
+  const [profilePic, setProfilePic] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
+  
+
+  // selectImage() - Selects an image from user's library.
+  const selectImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+    
+    console.log(result);
+    const source = { uri: result.uri };
+
+    if (!result.cancelled) {
+      setProfilePic(result.uri);
+    }
+    
+  };   
+  
+  // uploadImage() - Uploads image selected to Firebase
+  // const uploadImage = async () => {
+  //   const { uri } = profilePic;
+  //   const filename = uri.substring(uri.lastIndexOf('/') + 1);
+  //   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+  //   setUploading(true);
+  //   setTransferred(0);
+
+  //   const task = storage()
+  //     .ref(filename)
+  //     .putFile(uploadUri);
+
+  //     task.on('state_changed', snapshot => {
+  //       setTransferred(
+  //         Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+  //       );
+  //     });
+
+  //     try {
+  //       await task;
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //     setUploading(false);
+  //     Alert.alert(
+  //       'Photo uploaded!',
+  //       'Your photo has been uploaded to Firebase Cloud Storage!'
+  //     );
+  //     setImage(null);
+  // };
+
   //add a new post
   const addField = () => {
     //check if we have a new post
@@ -69,10 +130,16 @@ const MainScreen = () => {
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
         <HamburgerButton />
-        <Image
-          style={styles.profileImage}
-          source={require("../../assets/ErenYaeger.jpg")}
-        />
+          {profilePic !== null ? (
+          <TouchableOpacity onPress={() => selectImage()}>
+            {profilePic && <Image source={{ uri: profilePic }} style={styles.profilePic} />}
+          </TouchableOpacity>
+          ) : null }
+          {profilePic === null ? (
+          <TouchableOpacity onPress={() => selectImage()}>
+            <AddButton/>
+          </TouchableOpacity>
+          ) : null }
         <SettingsButton />
       </View>
       <View style={styles.middleView}>
@@ -112,11 +179,11 @@ const MainScreen = () => {
       <View style={styles.bottomContainer}>
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}>
-            <TouchableOpacity onPress={addField}>
-              <PostButton />
-            </TouchableOpacity>
             <TouchableOpacity>
               <Refreshbutton />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={addField}>
+              <PostButton />
             </TouchableOpacity>
             <TouchableOpacity>
               <ThumbsUp />
@@ -127,8 +194,9 @@ const MainScreen = () => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
-  profileImage: {
+  profilePic: {
     height: 78,
     width: 78,
     borderRadius: 400 / 2,

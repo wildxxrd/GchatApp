@@ -17,20 +17,21 @@ import HamburgerButton from "../Icons/HamburgerButton";
 import PostButton from "../Icons/PostButton";
 import Refreshbutton from "../Icons/RefreshButton";
 import SettingsButton from "../Icons/SettingsButton";
+import WeatherIcon from "../Icons/weatherICon";
 import { FlatList } from "react-native-gesture-handler";
 import ThumbsUp from "../Icons/ThumbsUp";
 import AddButton from "../Icons/AddButton";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 
 const MainScreen = () => {
-
   const postRef = firebase.firestore().collection("posts");
   const [addPost, setAddPost] = useState("");
+  const [likes, setLikes] = useState(0);
+  const [trending, setTrending] = useState();
   const [userPosts, setUserPosts] = useState([]);
   const [profilePic, setProfilePic] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
-  
 
   // selectImage() - Selects an image from user's library.
   const selectImage = async () => {
@@ -39,18 +40,17 @@ const MainScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
-    
-    console.log(result);
+
+    // console.log(result);
     const source = { uri: result.uri };
 
     if (!result.cancelled) {
       setProfilePic(result.uri);
     }
-    
-  };   
-  
+  };
+
   // uploadImage() - Uploads image selected to Firebase
   // const uploadImage = async () => {
   //   const { uri } = profilePic;
@@ -91,11 +91,13 @@ const MainScreen = () => {
       posts: addPost,
       createdAt: timeStamp,
       createdBy: firebase.auth().currentUser.email,
+      likes: likes,
     };
     postRef
       .add(data)
       .then(() => {
         setAddPost("");
+        setLikes(0);
         //release keyboard
         alert("Message Posted");
       })
@@ -105,48 +107,66 @@ const MainScreen = () => {
       });
   };
 
-  const fetchRef = firebase
-    .firestore()
-    .collection("posts")
-    .orderBy("createdAt", "desc");
+  const fetchLike = (postId) => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(postId)
+      .update({
+        likes: firebase.firestore.FieldValue.increment(1),
+      });
+  };
+
+  const fetchRef = trending
+    ? firebase.firestore().collection("posts").orderBy("likes", "desc")
+    : firebase.firestore().collection("posts").orderBy("createdAt", "desc");
 
   useEffect(() => {
     async function fetchFireStore() {
       fetchRef.onSnapshot((querySnapshot) => {
         const allPosts = [];
         querySnapshot.forEach((doc) => {
-          const { posts } = doc.data();
+          const { posts, likes } = doc.data();
+          const id = doc.id;
           allPosts.push({
             posts,
+            likes,
+            id,
           });
         });
         setUserPosts(allPosts);
       });
     }
     fetchFireStore();
-  }, []);
+  }, [trending]);
 
   return (
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
         <HamburgerButton />
-          {profilePic !== null ? (
+        {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
-            {profilePic && <Image source={{ uri: profilePic }} style={styles.profilePic} />}
+            {profilePic && (
+              <Image source={{ uri: profilePic }} style={styles.profilePic} />
+            )}
           </TouchableOpacity>
-          ) : null }
-          {profilePic === null ? (
+        ) : null}
+        {profilePic === null ? (
           <TouchableOpacity onPress={() => selectImage()}>
-            <AddButton/>
+            <AddButton />
           </TouchableOpacity>
-          ) : null }
+        ) : null}
         <SettingsButton />
       </View>
-      <View style={styles.middleView}>
-        <TouchableOpacity>
+      <View style={styles.weatherView}>
+      <WeatherIcon style={styles.middleViewText}/>
+      <Text style={styles.middleViewText}>78*</Text>
+      </View>
+      <View style={styles.middleView}> 
+        <TouchableOpacity onPress={() => setTrending(false)}>
           <Text style={styles.middleViewText}>Latest</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setTrending(true)}>
           <Text style={styles.middleViewText}>Trending</Text>
         </TouchableOpacity>
       </View>
@@ -171,6 +191,10 @@ const MainScreen = () => {
             <Pressable style={styles.container}>
               <View style={styles.textContainer}>
                 <Text style={styles.itemText}>{item.posts}</Text>
+                <TouchableOpacity onPress={() => fetchLike(item.id)}>
+                  <Refreshbutton />
+                </TouchableOpacity>
+                <Text>{item.likes}</Text>
               </View>
             </Pressable>
           </LinearGradient>
@@ -179,9 +203,7 @@ const MainScreen = () => {
       <View style={styles.bottomContainer}>
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}>
-            <TouchableOpacity>
-              <Refreshbutton />
-            </TouchableOpacity>
+            <TouchableOpacity>{/* Image Button */}</TouchableOpacity>
             <TouchableOpacity onPress={addField}>
               <PostButton />
             </TouchableOpacity>
@@ -221,6 +243,11 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-around",
+  },
+  weatherView: {
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   middleViewText: {
     fontWeight: "400",

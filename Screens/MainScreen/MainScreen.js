@@ -140,7 +140,9 @@ const MainScreen = () => {
             <AddButton/>
           </TouchableOpacity>
           ) : null }
-        <SettingsButton />
+        <TouchableOpacity>
+          <SettingsButton/>
+        </TouchableOpacity>
       </View>
       <View style={styles.middleView}>
         <TouchableOpacity>

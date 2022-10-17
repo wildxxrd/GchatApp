@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { firebase } from "./config";
 import SignUpScreenMain from "./Screens/SignUpScreen/SignUp/SignUpScreenMain";
 import SignInMainScreen from "./Screens/SignInScreen/SignInMainScreen";
+import UserPosts from "./Screens/MainScreen/UserPosts";
 import MainScreen from "./Screens/MainScreen/MainScreen";
 
 const Stack = createStackNavigator();
@@ -31,6 +32,7 @@ function MyStack() {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Sign Up" component={SignUpScreenMain} />
         <Stack.Screen name="Sign In" component={SignInMainScreen} />
+
       </Stack.Navigator>
     );
   }
@@ -38,6 +40,7 @@ function MyStack() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={MainScreen} />
+      <Stack.Screen name="My Posts" component={UserPosts} />
     </Stack.Navigator>
   );
 }

@@ -1,12 +1,12 @@
 import { StyleSheet, View, Button } from "react-native";
 import Feather from 'react-native-vector-icons/Feather'
 
-const RefreshButton = (text) => {
+const HomeIcon = () => {
   return (
     <View>
-      <Feather name="heart" size={30} color="red"/>
+      <Feather name="home" size={80} color='#3C4048'/>
     </View>
   );
 };
 
-export default RefreshButton;
+export default HomeIcon;

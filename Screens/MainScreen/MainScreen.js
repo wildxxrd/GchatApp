@@ -15,15 +15,16 @@ import { useEffect, useState } from "react";
 import { firebase } from "../../config";
 import HamburgerButton from "../Icons/HamburgerButton";
 import PostButton from "../Icons/PostButton";
-import Refreshbutton from "../Icons/RefreshButton";
 import SettingsButton from "../Icons/SettingsButton";
 import WeatherAPIComp from "./WeatherAPIComp";
 import { FlatList } from "react-native-gesture-handler";
-import ThumbsUp from "../Icons/ThumbsUp";
 import AddButton from "../Icons/AddButton";
 import * as ImagePicker from "expo-image-picker";
+import LikeButton from "../Icons/LikeButton";
+import MyProfile from "../Icons/MyProfile";
+import Camera from "../Icons/Camera";
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
   const postRef = firebase.firestore().collection("posts");
   const [addPost, setAddPost] = useState("");
   const [likes, setLikes] = useState(0);
@@ -141,8 +142,8 @@ const MainScreen = () => {
   }, [trending]);
 
   const getRandomID = () => {
-    return (Math.floor(100000 + Math.random() * 900000))
-  }
+    return Math.floor(100000 + Math.random() * 900000);
+  };
 
   return (
     <SafeAreaView style={styles.topContainer}>
@@ -193,12 +194,12 @@ const MainScreen = () => {
           <LinearGradient colors={["#04337A", "#DFF6FF"]}>
             <Pressable style={styles.container}>
               <View style={styles.textContainer}>
-                <Text style={styles.itemText}>
-                  {item.posts}
+                <Text style={styles.itemText}>{item.posts}</Text>
+                <Text style={styles.authorText}>
+                  By Anonymous #{getRandomID()}
                 </Text>
-                <Text style={styles.authorText}>By Anonymous#{getRandomID()}</Text>
                 <TouchableOpacity onPress={() => fetchLike(item.id)}>
-                  <Refreshbutton />
+                  <LikeButton />
                 </TouchableOpacity>
                 <Text>{item.likes}</Text>
               </View>
@@ -209,12 +210,14 @@ const MainScreen = () => {
       <View style={styles.bottomContainer}>
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}>
-            <TouchableOpacity>{/* Image Button */}</TouchableOpacity>
+            <TouchableOpacity>
+              <Camera />
+            </TouchableOpacity>
             <TouchableOpacity onPress={addField}>
               <PostButton />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <ThumbsUp />
+            <TouchableOpacity onPress={() => navigation.navigate("My Posts")}>
+              <MyProfile />
             </TouchableOpacity>
           </View>
         </LinearGradient>

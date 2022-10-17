@@ -9,10 +9,12 @@ import {
   Pressable,
   Button,
   Touchable,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { firebase } from "../../config";
+import {getStorage, ref, uploadBytes} from 'firebase/storage';
 import HamburgerButton from "../Icons/HamburgerButton";
 import PostButton from "../Icons/PostButton";
 import SettingsButton from "../Icons/SettingsButton";
@@ -44,45 +46,30 @@ const MainScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    // console.log(result);
     const source = { uri: result.uri };
 
-    if (!result.cancelled) {
-      setProfilePic(result.uri);
-    }
+    setProfilePic(source);
+
   };
 
-  // uploadImage() - Uploads image selected to Firebase
-  // const uploadImage = async () => {
-  //   const { uri } = profilePic;
-  //   const filename = uri.substring(uri.lastIndexOf('/') + 1);
-  //   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+  const uploadImage = async () => {
+    setUploading(true);
+    const response = await fetch(profilePic.uri)
+    const blob = await response.blob();
+    const filename = Image.uri.substring(profilePic.uri.lastIndexOf('/') + 1);
+    var ref = firebase.storage().ref().child(filename).put(blob);
 
-  //   setUploading(true);
-  //   setTransferred(0);
-
-  //   const task = storage()
-  //     .ref(filename)
-  //     .putFile(uploadUri);
-
-  //     task.on('state_changed', snapshot => {
-  //       setTransferred(
-  //         Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
-  //       );
-  //     });
-
-  //     try {
-  //       await task;
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //     setUploading(false);
-  //     Alert.alert(
-  //       'Photo uploaded!',
-  //       'Your photo has been uploaded to Firebase Cloud Storage!'
-  //     );
-  //     setImage(null);
-  // };
+    try {
+      await ref;
+    } catch(e) {
+      console.log(e)
+    }
+    setUploading(false);
+    Alert.alert(
+      'Profile Picture Updated!'
+    );
+    setProfilePic(null);
+  };
 
   //add a new post
   const addField = () => {
@@ -152,12 +139,12 @@ const MainScreen = ({ navigation }) => {
         {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
             {profilePic && (
-              <Image source={{ uri: profilePic }} style={styles.profilePic} />
+              <Image source={{ uri: profilePic.uri }} style={styles.profilePic} />
             )}
           </TouchableOpacity>
         ) : null}
         {profilePic === null ? (
-          <TouchableOpacity onPress={() => selectImage()}>
+          <TouchableOpacity onPress={() => {selectImage(); uploadImage()}}>
             <AddButton />
           </TouchableOpacity>
         ) : null}

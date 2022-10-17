@@ -17,7 +17,7 @@ import HamburgerButton from "../Icons/HamburgerButton";
 import PostButton from "../Icons/PostButton";
 import Refreshbutton from "../Icons/RefreshButton";
 import SettingsButton from "../Icons/SettingsButton";
-import WeatherIcon from "../Icons/weatherICon";
+import WeatherAPIComp from "./WeatherAPIComp";
 import { FlatList } from "react-native-gesture-handler";
 import ThumbsUp from "../Icons/ThumbsUp";
 import AddButton from "../Icons/AddButton";
@@ -158,9 +158,8 @@ const MainScreen = () => {
         ) : null}
         <SettingsButton />
       </View>
-      <View style={styles.weatherView}>
-      <WeatherIcon style={styles.middleViewText}/>
-      <Text style={styles.middleViewText}>78*</Text>
+      <View>
+      <WeatherAPIComp/>
       </View>
       <View style={styles.middleView}> 
         <TouchableOpacity onPress={() => setTrending(false)}>

@@ -1,12 +1,12 @@
 import { StyleSheet, View, Button } from "react-native";
 import Feather from 'react-native-vector-icons/Feather'
 
-const RefreshButton = (text) => {
+const LikeButton = (text) => {
   return (
     <View>
-      <Feather name="refresh-cw" size={50}/>
+      <Feather name="heart" size={30} color="red"/>
     </View>
   );
 };
 
-export default RefreshButton;
+export default LikeButton;

@@ -9,28 +9,32 @@ import {
   Pressable,
   Button,
   Touchable,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { firebase } from "../../config";
+import {getStorage, ref, uploadBytes} from 'firebase/storage';
 import HamburgerButton from "../Icons/HamburgerButton";
 import PostButton from "../Icons/PostButton";
-import Refreshbutton from "../Icons/RefreshButton";
 import SettingsButton from "../Icons/SettingsButton";
+import WeatherAPIComp from "./WeatherAPIComp";
 import { FlatList } from "react-native-gesture-handler";
-import ThumbsUp from "../Icons/ThumbsUp";
 import AddButton from "../Icons/AddButton";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
+import LikeButton from "../Icons/LikeButton";
+import MyProfile from "../Icons/MyProfile";
+import Camera from "../Icons/Camera";
 
-const MainScreen = () => {
-
+const MainScreen = ({ navigation }) => {
   const postRef = firebase.firestore().collection("posts");
   const [addPost, setAddPost] = useState("");
+  const [likes, setLikes] = useState(0);
+  const [trending, setTrending] = useState();
   const [userPosts, setUserPosts] = useState([]);
   const [profilePic, setProfilePic] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
-  
 
   // selectImage() - Selects an image from user's library.
   const selectImage = async () => {
@@ -39,49 +43,33 @@ const MainScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
-    
-    console.log(result);
+
     const source = { uri: result.uri };
 
-    if (!result.cancelled) {
-      setProfilePic(result.uri);
+    setProfilePic(source);
+
+  };
+
+  const uploadImage = async () => {
+    setUploading(true);
+    const response = await fetch(profilePic.uri)
+    const blob = await response.blob();
+    const filename = Image.uri.substring(profilePic.uri.lastIndexOf('/') + 1);
+    var ref = firebase.storage().ref().child(filename).put(blob);
+
+    try {
+      await ref;
+    } catch(e) {
+      console.log(e)
     }
-    
-  };   
-  
-  // uploadImage() - Uploads image selected to Firebase
-  // const uploadImage = async () => {
-  //   const { uri } = profilePic;
-  //   const filename = uri.substring(uri.lastIndexOf('/') + 1);
-  //   const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-
-  //   setUploading(true);
-  //   setTransferred(0);
-
-  //   const task = storage()
-  //     .ref(filename)
-  //     .putFile(uploadUri);
-
-  //     task.on('state_changed', snapshot => {
-  //       setTransferred(
-  //         Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
-  //       );
-  //     });
-
-  //     try {
-  //       await task;
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //     setUploading(false);
-  //     Alert.alert(
-  //       'Photo uploaded!',
-  //       'Your photo has been uploaded to Firebase Cloud Storage!'
-  //     );
-  //     setImage(null);
-  // };
+    setUploading(false);
+    Alert.alert(
+      'Profile Picture Updated!'
+    );
+    setProfilePic(null);
+  };
 
   //add a new post
   const addField = () => {
@@ -91,11 +79,13 @@ const MainScreen = () => {
       posts: addPost,
       createdAt: timeStamp,
       createdBy: firebase.auth().currentUser.email,
+      likes: likes,
     };
     postRef
       .add(data)
       .then(() => {
         setAddPost("");
+        setLikes(0);
         //release keyboard
         alert("Message Posted");
       })
@@ -105,48 +95,64 @@ const MainScreen = () => {
       });
   };
 
-  const fetchRef = firebase
-    .firestore()
-    .collection("posts")
-    .orderBy("createdAt", "desc");
+  const fetchLike = (postId) => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(postId)
+      .update({
+        likes: firebase.firestore.FieldValue.increment(1),
+      });
+  };
+
+  const fetchRef = trending
+    ? firebase.firestore().collection("posts").orderBy("likes", "desc")
+    : firebase.firestore().collection("posts").orderBy("createdAt", "desc");
 
   useEffect(() => {
     async function fetchFireStore() {
       fetchRef.onSnapshot((querySnapshot) => {
         const allPosts = [];
         querySnapshot.forEach((doc) => {
-          const { posts } = doc.data();
+          const { posts, likes } = doc.data();
+          const id = doc.id;
           allPosts.push({
             posts,
+            likes,
+            id,
           });
         });
         setUserPosts(allPosts);
       });
     }
     fetchFireStore();
-  }, []);
+  }, [trending]);
+
+  const getRandomID = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  };
 
   return (
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
         <HamburgerButton />
-          {profilePic !== null ? (
+        {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
-            {profilePic && <Image source={{ uri: profilePic }} style={styles.profilePic} />}
+            {profilePic && (
+              <Image source={{ uri: profilePic.uri }} style={styles.profilePic} />
+            )}
           </TouchableOpacity>
-          ) : null }
-          {profilePic === null ? (
-          <TouchableOpacity onPress={() => selectImage()}>
-            <AddButton/>
-          </TouchableOpacity>
-          ) : null }
+        ) : null}
         <SettingsButton />
       </View>
+      <View>
+        <WeatherAPIComp />
+      </View>
       <View style={styles.middleView}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setTrending(false)}>
           <Text style={styles.middleViewText}>Latest</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setTrending(true)}>
           <Text style={styles.middleViewText}>Trending</Text>
         </TouchableOpacity>
       </View>
@@ -171,6 +177,13 @@ const MainScreen = () => {
             <Pressable style={styles.container}>
               <View style={styles.textContainer}>
                 <Text style={styles.itemText}>{item.posts}</Text>
+                <Text style={styles.authorText}>
+                  By Anonymous #{getRandomID()}
+                </Text>
+                <TouchableOpacity onPress={() => fetchLike(item.id)}>
+                  <LikeButton />
+                </TouchableOpacity>
+                <Text>{item.likes}</Text>
               </View>
             </Pressable>
           </LinearGradient>
@@ -180,13 +193,13 @@ const MainScreen = () => {
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}>
             <TouchableOpacity>
-              <Refreshbutton />
+              <Camera />
             </TouchableOpacity>
             <TouchableOpacity onPress={addField}>
               <PostButton />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <ThumbsUp />
+            <TouchableOpacity onPress={() => navigation.navigate("My Posts")}>
+              <MyProfile />
             </TouchableOpacity>
           </View>
         </LinearGradient>
@@ -197,14 +210,17 @@ const MainScreen = () => {
 
 const styles = StyleSheet.create({
   profilePic: {
-    height: 78,
-    width: 78,
+    height: 50,
+    width: 50,
     borderRadius: 400 / 2,
   },
   container: {
     padding: 20,
     margin: 5,
     marginHorizontal: 5,
+  },
+  authorText: {
+    fontSize: 12,
   },
   textContainer: {
     marginVertical: 10,
@@ -221,6 +237,11 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-around",
+  },
+  weatherView: {
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   middleViewText: {
     fontWeight: "400",

@@ -11,7 +11,6 @@ import { FlatList } from "react-native-gesture-handler";
 import { firebase } from "../../config";
 import { getAuth } from "firebase/auth";
 import LikeButton from "../Icons/LikeButton";
-import MyProfile from "../Icons/MyProfile";
 import HomeIcon from "../Icons/HomeIcon";
 
 const UserPosts = ({ navigation }) => {
@@ -31,12 +30,13 @@ const UserPosts = ({ navigation }) => {
         fetchRef.onSnapshot((querySnapshot) => {
           const allPosts = [];
           querySnapshot.forEach((doc) => {
-            const { posts, likes } = doc.data();
+            const { posts, likes, createdAt } = doc.data();
             const id = doc.id;
             allPosts.push({
               posts,
               likes,
               id,
+              createdAt,
             });
           });
           setUserPosts(allPosts);
@@ -59,6 +59,9 @@ const UserPosts = ({ navigation }) => {
             <Pressable style={styles.container}>
               <View style={styles.textContainer}>
                 <Text style={styles.itemText}>{item.posts}</Text>
+                <Text style={styles.authorText}>
+                {JSON.stringify(item.createdAt.toDate().toLocaleDateString())}
+                </Text>
                 <LikeButton />
                 <Text>{item.likes}</Text>
               </View>

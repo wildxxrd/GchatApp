@@ -140,6 +140,10 @@ const MainScreen = () => {
     fetchFireStore();
   }, [trending]);
 
+  const getRandomID = () => {
+    return (Math.floor(100000 + Math.random() * 900000))
+  }
+
   return (
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
@@ -159,9 +163,9 @@ const MainScreen = () => {
         <SettingsButton />
       </View>
       <View>
-      <WeatherAPIComp/>
+        <WeatherAPIComp />
       </View>
-      <View style={styles.middleView}> 
+      <View style={styles.middleView}>
         <TouchableOpacity onPress={() => setTrending(false)}>
           <Text style={styles.middleViewText}>Latest</Text>
         </TouchableOpacity>
@@ -189,7 +193,10 @@ const MainScreen = () => {
           <LinearGradient colors={["#04337A", "#DFF6FF"]}>
             <Pressable style={styles.container}>
               <View style={styles.textContainer}>
-                <Text style={styles.itemText}>{item.posts}</Text>
+                <Text style={styles.itemText}>
+                  {item.posts}
+                </Text>
+                <Text style={styles.authorText}>By Anonymous#{getRandomID()}</Text>
                 <TouchableOpacity onPress={() => fetchLike(item.id)}>
                   <Refreshbutton />
                 </TouchableOpacity>
@@ -226,6 +233,9 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 5,
     marginHorizontal: 5,
+  },
+  authorText: {
+    fontSize: 12,
   },
   textContainer: {
     marginVertical: 10,

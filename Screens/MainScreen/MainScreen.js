@@ -143,11 +143,6 @@ const MainScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         ) : null}
-        {profilePic === null ? (
-          <TouchableOpacity onPress={() => {selectImage(); uploadImage()}}>
-            <AddButton />
-          </TouchableOpacity>
-        ) : null}
         <SettingsButton />
       </View>
       <View>
@@ -215,8 +210,8 @@ const MainScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   profilePic: {
-    height: 78,
-    width: 78,
+    height: 50,
+    width: 50,
     borderRadius: 400 / 2,
   },
   container: {

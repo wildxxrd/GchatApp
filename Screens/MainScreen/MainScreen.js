@@ -9,6 +9,7 @@ import {
   Pressable,
   Button,
   Touchable,
+  Container,
   Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -29,6 +30,7 @@ import Camera from "../Icons/Camera";
 const MainScreen = ({ navigation }) => {
   const postRef = firebase.firestore().collection("posts");
   const [addPost, setAddPost] = useState("");
+  const [image, setImage] = useState("");
   const [likes, setLikes] = useState(0);
   const [trending, setTrending] = useState();
   const [userPosts, setUserPosts] = useState([]);
@@ -36,21 +38,25 @@ const MainScreen = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
 
-  // selectImage() - Selects an image from user's library.
-  const selectImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    const source = { uri: result.uri };
+// selectImage() - Selects an image from user's library.
+const selectImage = async () => {
+  // No permissions request is necessary for launching the image library
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1
+  });
 
-    setProfilePic(source);
+  console.log(result);
+  const source = { uri: result.uri };
 
-  };
+  if (!result.cancelled) {
+    setProfilePic(result.uri);
+  }
+
+};
 
   const uploadImage = async () => {
     setUploading(true);
@@ -70,6 +76,78 @@ const MainScreen = ({ navigation }) => {
     );
     setProfilePic(null);
   };
+
+  //Add a new image as a post
+  const addImagePost = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+  
+    console.log(result);
+    const source = { uri: result.uri };
+  
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+
+    const data = {
+      imagePost: source,
+      createdAt: timeStamp,
+      createdBy: firebase.auth().currentUser.email,
+      likes: likes,
+    };
+
+    postRef
+      .add(source)
+      .then(() => {
+        setAddImage(source);
+        setLikes(0);
+        //release keyboard
+        alert("Image Posted");
+      })
+      .catch((error) => {
+        //show an alert in case of error
+        alert(error);
+      });
+  
+  };
+
+  // const fetchPosts = async () => {
+  //   try {
+  //     const list = [];
+
+  //     await firestore()
+  //       .collection('posts')
+  //       .orderBy('createdAt', 'desc')
+  //       .get()
+  //       .then((querySnapshot) => {
+  //         querySnapshot.forEach((doc)) => {
+  //           const {
+  //             userId,
+  //             imagePost,
+  //             likes,
+  //             createdAt,
+  //             createdBy,
+  //           } = doc.data();
+  //           list.push({
+  //             id: doc.id,
+  //             imagePost,
+  //             likes,
+  //             createdAt,
+  //             createdBy,
+  //           });
+  //         });
+  //       });
+  //   } catch(e) {
+  //     console.log(e);
+  //   }
+  // };
+
+  // useEffect
 
   //add a new post
   const addField = () => {
@@ -138,11 +216,14 @@ const MainScreen = ({ navigation }) => {
         <HamburgerButton />
         {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
-            {profilePic && (
-              <Image source={{ uri: profilePic.uri }} style={styles.profilePic} />
-            )}
+            {profilePic && <Image source={{ uri: profilePic }} style={styles.profilePic} />}
           </TouchableOpacity>
-        ) : null}
+          ) : null }
+          {profilePic === null ? (
+          <TouchableOpacity onPress={() => selectImage()}>
+            <AddButton/>
+          </TouchableOpacity>
+          ) : null }
         <SettingsButton />
       </View>
       <View>
@@ -192,7 +273,7 @@ const MainScreen = ({ navigation }) => {
       <View style={styles.bottomContainer}>
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => addImagePost()}>
               <Camera />
             </TouchableOpacity>
             <TouchableOpacity onPress={addField}>

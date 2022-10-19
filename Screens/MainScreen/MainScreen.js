@@ -11,8 +11,9 @@ import {
   Touchable,
   Alert,
 } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { firebase } from "../../config";
 import {getStorage, ref, uploadBytes} from 'firebase/storage';
 import HamburgerButton from "../Icons/HamburgerButton";
@@ -25,6 +26,12 @@ import * as ImagePicker from "expo-image-picker";
 import LikeButton from "../Icons/LikeButton";
 import MyProfile from "../Icons/MyProfile";
 import Camera from "../Icons/Camera";
+import Menu, {
+  MenuContext,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger
+} from 'react-native-popup-menu';
 
 const MainScreen = ({ navigation }) => {
   const postRef = firebase.firestore().collection("posts");
@@ -132,10 +139,15 @@ const MainScreen = ({ navigation }) => {
     return Math.floor(100000 + Math.random() * 900000);
   };
 
+
   return (
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
-        <HamburgerButton />
+      
+      <TouchableOpacity>
+        <HamburgerButton/>
+      </TouchableOpacity>
+
         {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
             {profilePic && (
@@ -143,7 +155,25 @@ const MainScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         ) : null}
-        <SettingsButton />
+
+        {/* Menu Stuff */}
+        <MenuContext style={{alignSelf: 'flex-end'}}>
+          <Menu>
+            <MenuTrigger>
+              <SettingsButton/>
+              <Text></Text>
+            </MenuTrigger>
+            <MenuOptions>
+              <MenuOption value={1}>
+                <Text>Settings</Text>
+              </MenuOption>
+              <MenuOption value={2}>
+                <Text>Log Out</Text>
+              </MenuOption>
+          </MenuOptions>
+        </Menu>
+      </MenuContext>
+
       </View>
       <View>
         <WeatherAPIComp />

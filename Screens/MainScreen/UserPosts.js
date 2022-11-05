@@ -11,6 +11,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { firebase } from "../../config";
 import { getAuth } from "firebase/auth";
 import LikeButton from "../Icons/LikeButton";
+import ReportButton from "../Icons/ReportButton";
 import HomeIcon from "../Icons/HomeIcon";
 
 const UserPosts = ({ navigation }) => {
@@ -63,7 +64,9 @@ const UserPosts = ({ navigation }) => {
                 {JSON.stringify(item.createdAt.toDate().toLocaleDateString())}
                 </Text>
                 <LikeButton />
+                <ReportButton /> 
                 <Text>{item.likes}</Text>
+                
               </View>
             </Pressable>
           )}

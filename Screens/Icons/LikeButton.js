@@ -4,7 +4,7 @@ import Feather from 'react-native-vector-icons/Feather'
 const LikeButton = (text) => {
   return (
     <View>
-      <Feather name="heart" size={30} color="red"/>
+      <Feather Icon name="heart" size={30} color="red"/>
     </View>
   );
 };

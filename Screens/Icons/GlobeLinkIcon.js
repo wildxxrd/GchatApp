@@ -3,12 +3,12 @@ import { StyleSheet, View } from "react-native";
 import Feather from 'react-native-vector-icons/Feather'
 
 
-const HamburgerButton = () => {
+const GlobeLinkIcon = () => {
   return (
     <View>
-      <Feather name="menu" size={50} />
+      <Feather name="globe" size={50} />
     </View>
   );
 };
 
-export default HamburgerButton;
+export default GlobeLinkIcon;

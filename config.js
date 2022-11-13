@@ -3,7 +3,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-
+const db = firebase.firestore();
 
 //web app Firebase configuration
 // Your web app's Firebase configuration
@@ -18,6 +18,15 @@ const firebaseConfig = {
 
 
   firebase.initializeApp(firebaseConfig);
+
+// firebase methods
+export const getPainatedTasks = () =>{
+  const queryRef = db.collection('posts')
+    .limit(15);
+
+
+  return queryRef.get();
+}
 
 
 export { firebase };

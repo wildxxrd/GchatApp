@@ -55,6 +55,8 @@ const UserPosts = ({ navigation }) => {
         <FlatList
           style={{ marginHorizontal: 20, maxHeight: 570 }}
           data={userPosts}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => fetchMore()}
           numColumns={1}
           renderItem={({ item }) => (
             <Pressable style={styles.container}>
@@ -82,6 +84,12 @@ const UserPosts = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+const fetchMore = () => {
+  // TODO: implement Lazy Loading
+  // getPainatedTasks()
+  //   .then(snapshots => snapshots.docs.map(mapDocToTask))
+}
 
 const styles = StyleSheet.create({
   titleText: {

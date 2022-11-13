@@ -15,10 +15,9 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { firebase } from "../../config";
-import {getStorage, ref, uploadBytes} from 'firebase/storage';
 import HamburgerButton from "../Icons/HamburgerButton";
 import PostButton from "../Icons/PostButton";
-import SettingsButton from "../Icons/SettingsButton";
+import LogOutButton from "../Icons/LogOutButton";
 import WeatherAPIComp from "./WeatherAPIComp";
 import { FlatList } from "react-native-gesture-handler";
 import AddButton from "../Icons/AddButton";
@@ -38,42 +37,47 @@ const MainScreen = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
 
+  const handleSignOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        navigation.navigate("Sign In");
+      })
+      .catch((error) => alert(error.message));
+  };
 
-// selectImage() - Selects an image from user's library.
-const selectImage = async () => {
-  // No permissions request is necessary for launching the image library
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1
-  });
+  // selectImage() - Selects an image from user's library.
+  const selectImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-  console.log(result);
-  const source = { uri: result.uri };
+    const source = { uri: result.uri };
 
-  if (!result.cancelled) {
-    setProfilePic(result.uri);
-  }
-
-};
+    if (!result.cancelled) {
+      setProfilePic(result.uri);
+    }
+  };
 
   const uploadImage = async () => {
     setUploading(true);
-    const response = await fetch(profilePic.uri)
+    const response = await fetch(profilePic.uri);
     const blob = await response.blob();
-    const filename = Image.uri.substring(profilePic.uri.lastIndexOf('/') + 1);
+    const filename = Image.uri.substring(profilePic.uri.lastIndexOf("/") + 1);
     var ref = firebase.storage().ref().child(filename).put(blob);
 
     try {
       await ref;
-    } catch(e) {
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
     setUploading(false);
-    Alert.alert(
-      'Profile Picture Updated!'
-    );
+    Alert.alert("Profile Picture Updated!");
     setProfilePic(null);
   };
 
@@ -84,12 +88,12 @@ const selectImage = async () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
-  
+
     console.log(result);
     const source = { uri: result.uri };
-  
+
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -113,7 +117,6 @@ const selectImage = async () => {
         //show an alert in case of error
         alert(error);
       });
-  
   };
 
   // const fetchPosts = async () => {
@@ -216,15 +219,19 @@ const selectImage = async () => {
         <HamburgerButton />
         {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
-            {profilePic && <Image source={{ uri: profilePic }} style={styles.profilePic} />}
+            {profilePic && (
+              <Image source={{ uri: profilePic }} style={styles.profilePic} />
+            )}
           </TouchableOpacity>
-          ) : null }
-          {profilePic === null ? (
+        ) : null}
+        {profilePic === null ? (
           <TouchableOpacity onPress={() => selectImage()}>
-            <AddButton/>
+            <AddButton />
           </TouchableOpacity>
-          ) : null }
-        <SettingsButton />
+        ) : null}
+        <TouchableOpacity onPress={handleSignOut}>
+          <LogOutButton />
+        </TouchableOpacity>
       </View>
       <View>
         <WeatherAPIComp />

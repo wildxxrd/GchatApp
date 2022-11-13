@@ -11,7 +11,8 @@ import { firebase } from "../../config";
 
 const SignInMainScreen = ({ navigation }) => {
   const signInTitleText = "Log in to your account";
-  const signUpFooterText = "New To GGChat?  ";
+  const signUpFooterText = "New To GGChat? ";
+  const forgotPasswordText = "Forgot Password? ";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,6 +23,20 @@ const SignInMainScreen = ({ navigation }) => {
       alert(error.message);
     }
   };
+
+  //forgot password
+  const forgotPassword = () => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert("Password Email Sent");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
     <View>
       <View style={style.container}>
@@ -56,6 +71,16 @@ const SignInMainScreen = ({ navigation }) => {
           {signUpFooterText}
           <TouchableOpacity onPress={() => navigation.navigate("Sign Up")}>
             <Text style={style.signUpText}>Sign Up</Text>
+          </TouchableOpacity>
+        </Text>
+        <Text style={style.footerText}>
+          {forgotPasswordText}
+          <TouchableOpacity
+            onPress={() => {
+              forgotPassword();
+            }}
+          >
+            <Text style={style.signUpText}>Reset Password</Text>
           </TouchableOpacity>
         </Text>
       </View>
@@ -111,7 +136,7 @@ const style = StyleSheet.create({
   },
   footerText: {
     color: "#fff",
-    marginHorizontal: 100,
+    marginHorizontal: 50,
     fontSize: 18,
   },
 });

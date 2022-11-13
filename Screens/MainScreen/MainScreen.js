@@ -11,11 +11,12 @@ import {
   Touchable,
   Container,
   Alert,
+  Linking,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { firebase } from "../../config";
-import HamburgerButton from "../Icons/HamburgerButton";
+import HamburgerButton from "../Icons/GlobeLinkIcon";
 import PostButton from "../Icons/PostButton";
 import LogOutButton from "../Icons/LogOutButton";
 import WeatherAPIComp from "./WeatherAPIComp";
@@ -216,7 +217,9 @@ const MainScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
-        <HamburgerButton />
+        <TouchableOpacity onPress={ ()=>{ Linking.openURL('https://www.ggc.edu/about-ggc/news/')}}>
+          <HamburgerButton />
+        </TouchableOpacity>
         {profilePic !== null ? (
           <TouchableOpacity onPress={() => selectImage()}>
             {profilePic && (

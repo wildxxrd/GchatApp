@@ -6,6 +6,7 @@ import {
   Pressable,
   TouchableOpacity,
   SafeAreaView,
+  Image,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { firebase } from "../../config";
@@ -58,7 +59,13 @@ const UserPosts = ({ navigation }) => {
           renderItem={({ item }) => (
             <Pressable style={styles.container}>
               <View style={styles.textContainer}>
-                <Text style={styles.itemText}>{item.posts}</Text>
+                {
+                  (item.posts && !item.posts.includes("file") ? (
+                    <Text style={styles.itemText}>{item.posts}</Text>
+                  ) : (
+                    <Image source={{ uri: item.posts }} style={styles.imagePost} />
+                  ))
+                }
                 <Text style={styles.authorText}>
                 {JSON.stringify(item.createdAt.toDate().toLocaleDateString())}
                 </Text>
@@ -158,6 +165,10 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 80 /2,
   },
+  imagePost: {
+    width: 100,
+    height: 100
+  }
 });
 
 export default UserPosts;

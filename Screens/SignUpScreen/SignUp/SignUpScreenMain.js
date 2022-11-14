@@ -35,6 +35,7 @@ const SignUpScreenMain = ({ navigation }) => {
                 firstName,
                 lastName,
                 email,
+                uri,
               });
           })
           .catch((error) => {

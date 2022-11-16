@@ -13,6 +13,7 @@ import { firebase } from "../../config";
 import { getAuth } from "firebase/auth";
 import LikeButton from "../Icons/LikeButton";
 import HomeIcon from "../Icons/HomeIcon";
+import Delete from "../Icons/Delete";
 import Report from "../Icons/Report";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -84,7 +85,7 @@ const UserPosts = ({ navigation }) => {
                 <LikeButton />
                 <Text>{item.likes}</Text>
                 <TouchableOpacity onPress = {() => deletePost(item.id)}>
-                  <Report/>
+                  <Delete/>
                 </TouchableOpacity>
               </View>
             </Pressable>
@@ -178,6 +179,9 @@ const styles = StyleSheet.create({
   textDisplay: {
     padding: 20,
     fontSize: 16,
+  },
+  triggerWrapper: {
+    top: -20,
   },
   weatherView: {
     padding: 20,

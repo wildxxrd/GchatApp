@@ -28,7 +28,7 @@ import HamburgerButton from "../Icons/GlobeLinkIcon";
 import PostButton from "../Icons/PostButton";
 import LogOutButton from "../Icons/LogOutButton";
 import WeatherAPIComp from "./WeatherAPIComp";
-import { FlatList,ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import AddButton from "../Icons/AddButton";
 import * as ImagePicker from "expo-image-picker";
 import LikeButton from "../Icons/LikeButton";
@@ -36,6 +36,7 @@ import MyProfile from "../Icons/MyProfile";
 import Camera from "../Icons/Camera";
 import {getAuth} from "firebase/auth";
 import Report from "../Icons/Report";
+
 
 
 const MainScreen = ({ navigation }) => {
@@ -217,7 +218,8 @@ const MainScreen = ({ navigation }) => {
       })
   }
 
-
+  const Divider = () => <View style={styles.divider} />;
+  
 
   return (
     <SafeAreaView style={styles.topContainer}>
@@ -270,20 +272,6 @@ const MainScreen = ({ navigation }) => {
         numColumns={1}
         renderItem={({ item }) => (
           <LinearGradient colors={["#04337A", "#DFF6FF"]}>
-              <MenuProvider style={{alignItems:'flex-end', skipInstanceCheck: 'true'}}>
-              <Menu>
-              <MenuTrigger>
-                <Report/>
-              </MenuTrigger>
-                <MenuOptions>
-
-                  <MenuOption onSelect={() => fetchReport(item.id)} >
-                  <Text>Report</Text>
-                  </MenuOption>
-                
-                </MenuOptions>
-              </Menu>
-            </MenuProvider>
             <Pressable style={styles.container} onLongPress ={() => window.alert("long press")}>
               <View style={styles.textContainer} >
                 {
@@ -300,10 +288,18 @@ const MainScreen = ({ navigation }) => {
                   <LikeButton />
                 </TouchableOpacity>
                 <Text>{item.likes}</Text>
-                {/* <TouchableOpacity style={{alignItems:'flex-end'}} 
-                    onPress={() => fetchReport(item.id)}>
+                <MenuProvider style={{alignItems:'flex-end', skipInstanceCheck: 'true'}}>
+              <Menu>
+              <MenuTrigger>
+                <Report/>
+              </MenuTrigger>
+                <MenuOptions>
+                  <MenuOption onSelect={() => fetchReport(item.id)} >
                   <Text>Report</Text>
-                </TouchableOpacity> */}
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
+            </MenuProvider>
               </View>
             </Pressable>
           </LinearGradient>
@@ -313,16 +309,23 @@ const MainScreen = ({ navigation }) => {
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}> 
           <View style={styles.imageMenu}>
-            <MenuProvider skipInstanceCheck='true'>
+            <MenuProvider style={styles.menuContainer} skipInstanceCheck='true'>
               <Menu>
-                  <MenuTrigger>
-                    <Camera style={styles.cameraIcon}></Camera>
+                  <MenuTrigger style={styles.triggerWrapper} >
+                  <Camera></Camera> 
                   </MenuTrigger>  
-                <MenuOptions>
-                  <MenuOption onSelect={() => takePhotoFromCamera()} text='Take Photo' />
-                  <MenuOption onSelect={() => postImageFromLibrary()} text='Select Image' >
-                  </MenuOption>
-                </MenuOptions>
+                  <MenuOptions style={styles.optionsWrapper}>
+                    <ScrollView style={{ height: 70 }}>
+                      <MenuOption onSelect={() => takePhotoFromCamera()} text='Take Photo' />
+                      <Divider></Divider>
+                      <MenuOption onSelect={() => postImageFromLibrary()} text='Select Image' />
+                      <Divider></Divider>
+                      <MenuOption onPress={() => {
+                      this.props.onLogout()
+                      this.setState({ opened: false })
+                      }} text='Cancel'/>
+                    </ScrollView>
+                  </MenuOptions>
               </Menu>
             </MenuProvider>
           </View>
@@ -351,15 +354,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    marginHorizontal: 5,
+    marginHorizontal: 0,
     height: 80,
-  },
-  cameraIcon: {
   },
   container: {
     padding: 20,
     margin: 5,
     marginHorizontal: 5,
+  },
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: "#7F8487",
   },
   itemText: {
     padding: 5,
@@ -369,6 +374,11 @@ const styles = StyleSheet.create({
   imagePost: {
     width: 360,
     height: 250,
+  },
+  optionsWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   middleViewText: {
     fontWeight: "450",
@@ -381,6 +391,10 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-around",
+  },
+  menuContainer: {
+    flex: 1,
+    top: 12,
   },
   profilePic: {
     height: 60,
@@ -402,6 +416,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 20,
     marginHorizontal: 10,
+  },
+  triggerWrapper: {
+    marginHorizontal: 26,
   },
   userInput: {
     justifyContent: "center",

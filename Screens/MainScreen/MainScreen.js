@@ -19,7 +19,7 @@ import {
   MenuOption,
   MenuTrigger,
   MenuProvider,
-  ScrollView
+
 } from 'react-native-popup-menu';
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ import HamburgerButton from "../Icons/GlobeLinkIcon";
 import PostButton from "../Icons/PostButton";
 import LogOutButton from "../Icons/LogOutButton";
 import WeatherAPIComp from "./WeatherAPIComp";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList,ScrollView } from "react-native-gesture-handler";
 import AddButton from "../Icons/AddButton";
 import * as ImagePicker from "expo-image-picker";
 import LikeButton from "../Icons/LikeButton";
@@ -168,6 +168,16 @@ const MainScreen = ({ navigation }) => {
       });
   };
 
+  const fetchReport = (postId) => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(postId)
+      .update({
+        reports: firebase.firestore.FieldValue.increment(1),
+      });
+  };
+
   const fetchRef = trending
     ? firebase.firestore().collection("posts").orderBy("likes", "desc")
     : firebase.firestore().collection("posts").orderBy("createdAt", "desc");
@@ -204,6 +214,8 @@ const MainScreen = ({ navigation }) => {
         window.alert("Post deleted")
       })
   }
+
+  
 
   return (
     <SafeAreaView style={styles.topContainer}>
@@ -256,12 +268,12 @@ const MainScreen = ({ navigation }) => {
         numColumns={1}
         renderItem={({ item }) => (
           <LinearGradient colors={["#04337A", "#DFF6FF"]}>
-              <MenuProvider style={{alignItems:'flex-end',}}>
-              <Menu skipInstanceCheck = 'true' anchorStyle={styles.anchorStyle}>
+              <MenuProvider style={{alignItems:'flex-end', skipInstanceCheck: 'true'}}>
+              <Menu>
               <MenuTrigger>
                 <Report/>
               </MenuTrigger>
-                <MenuOptions customStyle={{optionWrapper: { padding: 5}, optionText: styles.text}}>
+                <MenuOptions>
 
                   <MenuOption onSelect={() => deletePost(item.id)} >
                   <Text>Delete</Text>
@@ -269,7 +281,7 @@ const MainScreen = ({ navigation }) => {
                   <MenuOption >
                   <Text>Report</Text>
                   </MenuOption>
-
+                
                 </MenuOptions>
               </Menu>
             </MenuProvider>
@@ -289,10 +301,10 @@ const MainScreen = ({ navigation }) => {
                   <LikeButton />
                 </TouchableOpacity>
                 <Text>{item.likes}</Text>
-                {/* <TouchableOpacity style={{alignItems:'flex-end'}} 
-                    onPress={() => window.alert("Thank you for reporting")}>
-                  <Report />
-                </TouchableOpacity> */}
+                <TouchableOpacity style={{alignItems:'flex-end'}} 
+                    onPress={() => fetchReport(item.id)}>
+                  <Text>Report</Text>
+                </TouchableOpacity>
               </View>
             </Pressable>
           </LinearGradient>
@@ -302,7 +314,7 @@ const MainScreen = ({ navigation }) => {
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}> 
           <View style={styles.imageMenu}>
-            <MenuProvider>
+            <MenuProvider skipInstanceCheck='true'>
               <Menu>
                   <MenuTrigger style={styles.trigger}>
                     <Camera></Camera>

@@ -236,7 +236,7 @@ const MainScreen = ({ navigation }) => {
         ) : null}
         {profilePic === "" ? (
           <TouchableOpacity onPress={() => selectImageFromLibrary()}>
-            <AddButton />
+            <AddButton style={styles.addButton} />
           </TouchableOpacity>
         ) : null}
         <TouchableOpacity onPress={handleSignOut}>
@@ -307,28 +307,28 @@ const MainScreen = ({ navigation }) => {
       />
       <View style={styles.bottomContainer}>
         <LinearGradient colors={["#04337A", "white"]}>
-          <View style={styles.bottomView}> 
-          <View style={styles.imageMenu}>
+          <View style={styles.bottomView}>
+            <View>
             <MenuProvider style={styles.menuContainer} skipInstanceCheck='true'>
               <Menu>
-                  <MenuTrigger style={styles.triggerWrapper} >
-                  <Camera></Camera> 
-                  </MenuTrigger>  
-                  <MenuOptions style={styles.optionsWrapper}>
-                    <ScrollView style={{ height: 70 }}>
-                      <MenuOption onSelect={() => takePhotoFromCamera()} text='Take Photo' />
-                      <Divider></Divider>
-                      <MenuOption onSelect={() => postImageFromLibrary()} text='Select Image' />
-                      <Divider></Divider>
-                      <MenuOption onPress={() => {
-                      this.props.onLogout()
-                      this.setState({ opened: false })
-                      }} text='Cancel'/>
-                    </ScrollView>
-                  </MenuOptions>
+                <MenuTrigger style={styles.triggerWrapper} >
+                <Camera></Camera> 
+                </MenuTrigger>  
+                <MenuOptions style={styles.optionsWrapper}>
+                  <ScrollView style={{ height: 70 }}>
+                    <MenuOption onSelect={() => takePhotoFromCamera()} text='Take Photo' />
+                    <Divider></Divider>
+                    <MenuOption onSelect={() => postImageFromLibrary()} text='Select Image' />
+                    <Divider></Divider>
+                    <MenuOption onPress={() => {
+                    this.props.onLogout()
+                    this.setState({ opened: false })
+                    }} text='Cancel'/>
+                  </ScrollView>
+                </MenuOptions>
               </Menu>
             </MenuProvider>
-          </View>
+            </View>
             <TouchableOpacity onPress={addField}>
               <PostButton />
             </TouchableOpacity>
@@ -346,16 +346,21 @@ const styles = StyleSheet.create({
   authorText: {
     fontSize: 12,
   },
+  addButton: {
+    position: "absolute",
+    left: 20
+  },
   bottomContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "flex-end"
   },
   bottomView: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
-    marginHorizontal: 0,
-    height: 80,
+    right: 12,
+    justifyContent: "space-between",
+    marginHorizontal: 15,
+    height: 75,
   },
   container: {
     padding: 20,
@@ -393,7 +398,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   menuContainer: {
-    flex: 1,
     top: 12,
   },
   profilePic: {

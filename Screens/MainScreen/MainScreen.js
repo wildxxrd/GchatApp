@@ -169,13 +169,14 @@ const MainScreen = ({ navigation }) => {
   };
 
   const fetchReport = (postId) => {
-    firebase
-      .firestore()
-      .collection("posts")
-      .doc(postId)
-      .update({
-        reports: firebase.firestore.FieldValue.increment(1),
-      });
+      firebase
+        .firestore()
+        .collection("posts")
+        .doc(postId)
+        .update({
+          reports: firebase.firestore.FieldValue.increment(1),
+        });
+        window.alert("Thank you for reporting")
   };
 
   const fetchRef = trending
@@ -215,7 +216,7 @@ const MainScreen = ({ navigation }) => {
       })
   }
 
-  
+
 
   return (
     <SafeAreaView style={styles.topContainer}>
@@ -275,10 +276,7 @@ const MainScreen = ({ navigation }) => {
               </MenuTrigger>
                 <MenuOptions>
 
-                  <MenuOption onSelect={() => deletePost(item.id)} >
-                  <Text>Delete</Text>
-                  </MenuOption>
-                  <MenuOption >
+                  <MenuOption onSelect={() => fetchReport(item.id)} >
                   <Text>Report</Text>
                   </MenuOption>
                 
@@ -301,10 +299,10 @@ const MainScreen = ({ navigation }) => {
                   <LikeButton />
                 </TouchableOpacity>
                 <Text>{item.likes}</Text>
-                <TouchableOpacity style={{alignItems:'flex-end'}} 
+                {/* <TouchableOpacity style={{alignItems:'flex-end'}} 
                     onPress={() => fetchReport(item.id)}>
                   <Text>Report</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </Pressable>
           </LinearGradient>

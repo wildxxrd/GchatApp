@@ -13,12 +13,23 @@ import { firebase } from "../../config";
 import { getAuth } from "firebase/auth";
 import LikeButton from "../Icons/LikeButton";
 import HomeIcon from "../Icons/HomeIcon";
+import Report from "../Icons/Report";
 
 const UserPosts = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
 
   const auth = getAuth();
   const user = auth.currentUser;
+
+  const deletePost = (postId) => {
+    firebase.firestore()
+      .collection('posts')
+      .doc(postId)
+      .delete()
+      .then(() => {
+        window.alert("Post deleted")
+      })
+  }
 
   user.providerData.forEach((profile) => {
     const fetchRef = firebase
@@ -71,6 +82,9 @@ const UserPosts = ({ navigation }) => {
                 </Text>
                 <LikeButton />
                 <Text>{item.likes}</Text>
+                <TouchableOpacity onPress = {() => deletePost(item.id)}>
+                  <Report/>
+                </TouchableOpacity>
               </View>
             </Pressable>
           )}

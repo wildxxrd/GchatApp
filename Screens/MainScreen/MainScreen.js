@@ -18,7 +18,8 @@ import {
   MenuOptions,
   MenuOption,
   MenuTrigger,
-  MenuProvider
+  MenuProvider,
+  ScrollView
 } from 'react-native-popup-menu';
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -34,6 +35,7 @@ import LikeButton from "../Icons/LikeButton";
 import MyProfile from "../Icons/MyProfile";
 import Camera from "../Icons/Camera";
 import {getAuth} from "firebase/auth";
+import Report from "../Icons/Report";
 
 
 const MainScreen = ({ navigation }) => {
@@ -77,6 +79,7 @@ const MainScreen = ({ navigation }) => {
       })
       .catch((error) => alert(error.message));
   };
+
 
   // selectImageFromLibrary() - Selects an image from user's library.
   const selectImageFromLibrary = async () => {
@@ -192,6 +195,16 @@ const MainScreen = ({ navigation }) => {
     return Math.floor(100000 + Math.random() * 900000);
   };
 
+  const deletePost = (postId) => {
+    firebase.firestore()
+      .collection('posts')
+      .doc(postId)
+      .delete()
+      .then(() => {
+        window.alert("Post deleted")
+      })
+  }
+
   return (
     <SafeAreaView style={styles.topContainer}>
       <View style={styles.topView}>
@@ -243,8 +256,25 @@ const MainScreen = ({ navigation }) => {
         numColumns={1}
         renderItem={({ item }) => (
           <LinearGradient colors={["#04337A", "#DFF6FF"]}>
-            <Pressable style={styles.container}>
-              <View style={styles.textContainer}>
+              <MenuProvider style={{alignItems:'flex-end',}}>
+              <Menu skipInstanceCheck = 'true' anchorStyle={styles.anchorStyle}>
+              <MenuTrigger>
+                <Report/>
+              </MenuTrigger>
+                <MenuOptions customStyle={{optionWrapper: { padding: 5}, optionText: styles.text}}>
+
+                  <MenuOption onSelect={() => deletePost(item.id)} >
+                  <Text>Delete</Text>
+                  </MenuOption>
+                  <MenuOption >
+                  <Text>Report</Text>
+                  </MenuOption>
+
+                </MenuOptions>
+              </Menu>
+            </MenuProvider>
+            <Pressable style={styles.container} onLongPress ={() => window.alert("long press")}>
+              <View style={styles.textContainer} >
                 {
                   (item.posts && !item.posts.includes("ImagePicker") ? (
                     <Text style={styles.itemText}>{item.posts}</Text>
@@ -259,6 +289,10 @@ const MainScreen = ({ navigation }) => {
                   <LikeButton />
                 </TouchableOpacity>
                 <Text>{item.likes}</Text>
+                {/* <TouchableOpacity style={{alignItems:'flex-end'}} 
+                    onPress={() => window.alert("Thank you for reporting")}>
+                  <Report />
+                </TouchableOpacity> */}
               </View>
             </Pressable>
           </LinearGradient>

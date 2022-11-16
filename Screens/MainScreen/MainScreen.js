@@ -234,7 +234,7 @@ const MainScreen = ({ navigation }) => {
             )}
           </TouchableOpacity>
         ) : null}
-        {profilePic === null ? (
+        {profilePic === "" ? (
           <TouchableOpacity onPress={() => selectImageFromLibrary()}>
             <AddButton />
           </TouchableOpacity>

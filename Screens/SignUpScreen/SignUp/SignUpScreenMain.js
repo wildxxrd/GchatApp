@@ -97,7 +97,7 @@ const SignUpScreenMain = ({ navigation }) => {
         <Text style={style.signUpText}>Sign Up</Text>
       </TouchableOpacity>
       <Text style={style.footerText}>
-        {"\n"}
+        {"\n\n"}
         {registerText}
         <TouchableOpacity onPress={() => navigation.navigate("Sign In")}>
           <Text style={style.loginText}>Login</Text>
@@ -129,7 +129,7 @@ const style = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    backgroundColor: "#06283D",
+    backgroundColor: "#256D85",
     color: "#DFF6FF",
     height: 40,
     width: 400,
@@ -138,9 +138,16 @@ const style = StyleSheet.create({
     borderRadius: 10,
   },
   signUpText: {
-    marginHorizontal: 170,
-    color: "#47B5FF",
-    fontSize: 20,
+    backgroundColor: "#47B5FF",
+    marginHorizontal: 120,
+    color: "#06283D",
+    fontWeight: "bold",
+    fontSize: 25,
+    width: 110,
+    height: 50,
+    marginBottom: 40,
+    padding: 10,
+    borderRadius: 100,
   },
   loginText: {
     color: "#47B5FF",

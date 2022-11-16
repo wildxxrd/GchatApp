@@ -74,6 +74,7 @@ const SignInMainScreen = ({ navigation }) => {
           </TouchableOpacity>
         </Text>
         <Text style={style.footerText}>
+        {"\n"}
           {forgotPasswordText}
           <TouchableOpacity
             onPress={() => {
@@ -124,7 +125,7 @@ const style = StyleSheet.create({
     color: "#06283D",
     fontWeight: "bold",
     fontSize: 25,
-    width: 100,
+    width: 90,
     height: 50,
     marginBottom: 40,
     padding: 10,

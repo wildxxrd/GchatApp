@@ -13,6 +13,7 @@ import { firebase } from "../../config";
 import { getAuth } from "firebase/auth";
 import LikeButton from "../Icons/LikeButton";
 import HomeIcon from "../Icons/HomeIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 const UserPosts = ({ navigation }) => {
   const [userPosts, setUserPosts] = useState([]);
@@ -76,11 +77,13 @@ const UserPosts = ({ navigation }) => {
           )}
         />
         <View style={styles.bottomContainer}>
-          <View style={styles.bottomView}>
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-              <HomeIcon />
-            </TouchableOpacity>
-          </View>
+          <LinearGradient colors={["#04337A", "white"]}>
+            <View style={styles.bottomView}>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <HomeIcon />
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
         </View>
       </View>
     </SafeAreaView>
@@ -88,42 +91,38 @@ const UserPosts = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  titleText: {
-    alignItems: 'center',
-    color: "#3C4048",
-    fontStyle: 'italic',
-    fontSize: 40,
-    marginHorizontal: 20,
-    fontWeight: "bold",
+  authorText: {
+    fontSize: 14,
+  },
+  bottomContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  bottomView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginHorizontal: 5,
+    height: 80,
   },
   container: {
     padding: 20,
     margin: 5,
     marginHorizontal: 5,
   },
-  authorText: {
-    fontSize: 12,
-  },
-  textContainer: {
-    marginVertical: 0,
+  imagePost: {
+    width: 325,
+    height: 250,
   },
   itemText: {
     padding: 5,
     fontSize: 30,
     fontWeight: "300",
   },
-  topContainer: {
-    flex: 1,
-  },
   middleView: {
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-around",
-  },
-  weatherView: {
-    padding: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   middleViewText: {
     fontWeight: "400",
@@ -131,6 +130,20 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
+  },
+  textContainer: {
+    marginVertical: 0,
+  },
+  topContainer: {
+    flex: 1,
+  },
+  titleText: {
+    alignItems: 'center',
+    color: "#3C4048",
+    fontStyle: 'italic',
+    fontSize: 40,
+    marginHorizontal: 70,
+    fontWeight: "bold",
   },
   topView: {
     flexDirection: "row",
@@ -152,23 +165,11 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 16,
   },
-  bottomContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  bottomView: {
+  weatherView: {
+    padding: 20,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: '#00ABB3',
-    marginHorizontal: 10,
-    height: 80,
-    borderRadius: 80 /2,
+    justifyContent: "space-between",
   },
-  imagePost: {
-    width: 100,
-    height: 100
-  }
 });
 
 export default UserPosts;

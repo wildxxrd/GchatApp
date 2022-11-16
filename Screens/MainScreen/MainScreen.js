@@ -18,7 +18,8 @@ import {
   MenuOptions,
   MenuOption,
   MenuTrigger,
-  MenuProvider
+  MenuProvider,
+
 } from 'react-native-popup-menu';
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -27,13 +28,14 @@ import HamburgerButton from "../Icons/GlobeLinkIcon";
 import PostButton from "../Icons/PostButton";
 import LogOutButton from "../Icons/LogOutButton";
 import WeatherAPIComp from "./WeatherAPIComp";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList,ScrollView } from "react-native-gesture-handler";
 import AddButton from "../Icons/AddButton";
 import * as ImagePicker from "expo-image-picker";
 import LikeButton from "../Icons/LikeButton";
 import MyProfile from "../Icons/MyProfile";
 import Camera from "../Icons/Camera";
 import {getAuth} from "firebase/auth";
+import Report from "../Icons/Report";
 
 
 const MainScreen = ({ navigation }) => {
@@ -77,6 +79,7 @@ const MainScreen = ({ navigation }) => {
       })
       .catch((error) => alert(error.message));
   };
+
 
   // selectImageFromLibrary() - Selects an image from user's library.
   const selectImageFromLibrary = async () => {
@@ -166,6 +169,17 @@ const MainScreen = ({ navigation }) => {
       });
   };
 
+  const fetchReport = (postId) => {
+      firebase
+        .firestore()
+        .collection("posts")
+        .doc(postId)
+        .update({
+          reports: firebase.firestore.FieldValue.increment(1),
+        });
+        window.alert("Thank you for reporting")
+  };
+
   const fetchRef = trending
     ? firebase.firestore().collection("posts").orderBy("likes", "desc")
     : firebase.firestore().collection("posts").orderBy("createdAt", "desc");
@@ -192,6 +206,18 @@ const MainScreen = ({ navigation }) => {
   const getRandomID = () => {
     return Math.floor(100000 + Math.random() * 900000);
   };
+
+  const deletePost = (postId) => {
+    firebase.firestore()
+      .collection('posts')
+      .doc(postId)
+      .delete()
+      .then(() => {
+        window.alert("Post deleted")
+      })
+  }
+
+
 
   return (
     <SafeAreaView style={styles.topContainer}>
@@ -244,8 +270,22 @@ const MainScreen = ({ navigation }) => {
         numColumns={1}
         renderItem={({ item }) => (
           <LinearGradient colors={["#04337A", "#DFF6FF"]}>
-            <Pressable style={styles.container}>
-              <View style={styles.textContainer}>
+              <MenuProvider style={{alignItems:'flex-end', skipInstanceCheck: 'true'}}>
+              <Menu>
+              <MenuTrigger>
+                <Report/>
+              </MenuTrigger>
+                <MenuOptions>
+
+                  <MenuOption onSelect={() => fetchReport(item.id)} >
+                  <Text>Report</Text>
+                  </MenuOption>
+                
+                </MenuOptions>
+              </Menu>
+            </MenuProvider>
+            <Pressable style={styles.container} onLongPress ={() => window.alert("long press")}>
+              <View style={styles.textContainer} >
                 {
                   (item.posts && !item.posts.includes("ImagePicker") ? (
                     <Text style={styles.itemText}>{item.posts}</Text>
@@ -260,6 +300,10 @@ const MainScreen = ({ navigation }) => {
                   <LikeButton />
                 </TouchableOpacity>
                 <Text>{item.likes}</Text>
+                {/* <TouchableOpacity style={{alignItems:'flex-end'}} 
+                    onPress={() => fetchReport(item.id)}>
+                  <Text>Report</Text>
+                </TouchableOpacity> */}
               </View>
             </Pressable>
           </LinearGradient>
@@ -269,7 +313,7 @@ const MainScreen = ({ navigation }) => {
         <LinearGradient colors={["#04337A", "white"]}>
           <View style={styles.bottomView}> 
           <View style={styles.imageMenu}>
-            <MenuProvider>
+            <MenuProvider skipInstanceCheck='true'>
               <Menu>
                   <MenuTrigger>
                     <Camera style={styles.cameraIcon}></Camera>

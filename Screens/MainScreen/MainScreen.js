@@ -92,12 +92,12 @@ const MainScreen = ({ navigation }) => {
     });
 
     const source = { uri: result.uri };
-    
+
     if (!result.cancelled) {
       setProfilePic(result.uri);
     }
   };
-
+  // postImageFromLibrary() allows user to choose a picture and add the URI in 'What's in your mind?' dropbox to let post image if desired.
   const postImageFromLibrary = async () => {
     // No permissions request is necessary for launching the image library.
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -115,7 +115,7 @@ const MainScreen = ({ navigation }) => {
     }
   };
 
-
+  // takePhotoFromCamera() allows user to take a picture and add the URI in 'What's in your mind?' dropbox to let post image if desired.
   const takePhotoFromCamera = async () => {
     // No permissions request is necessary for opening camera.
     let result = await ImagePicker.launchCameraAsync({
@@ -133,7 +133,7 @@ const MainScreen = ({ navigation }) => {
     }
   };
 
-  //add new post
+  // addField() adds a new post.
   const addField = () => {
     //check if we have a new post
     const timeStamp = firebase.firestore.FieldValue.serverTimestamp();
@@ -158,6 +158,7 @@ const MainScreen = ({ navigation }) => {
       });
   };
 
+  // fetchLike() updates amount of likes in Firebase when a post receives a like.
   const fetchLike = (postId) => {
     firebase
       .firestore()
@@ -264,7 +265,7 @@ const MainScreen = ({ navigation }) => {
         />
       </View>
       <FlatList
-        style={{ marginHorizontal: 20, maxHeight: 490 }}
+        style={{ marginHorizontal: 0, maxHeight: 490 }}
         data={userPosts}
         numColumns={1}
         renderItem={({ item }) => (
@@ -314,8 +315,8 @@ const MainScreen = ({ navigation }) => {
           <View style={styles.imageMenu}>
             <MenuProvider skipInstanceCheck='true'>
               <Menu>
-                  <MenuTrigger style={styles.trigger}>
-                    <Camera></Camera>
+                  <MenuTrigger>
+                    <Camera style={styles.cameraIcon}></Camera>
                   </MenuTrigger>  
                 <MenuOptions>
                   <MenuOption onSelect={() => takePhotoFromCamera()} text='Take Photo' />
@@ -339,50 +340,62 @@ const MainScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  profilePic: {
-    height: 50,
-    width: 50,
-    borderRadius: 400 / 2,
+  authorText: {
+    fontSize: 12,
   },
-  images: {
-    height: 400,
-    width: 400,
+  bottomContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  bottomView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginHorizontal: 5,
+    height: 80,
+  },
+  cameraIcon: {
   },
   container: {
     padding: 20,
     margin: 5,
     marginHorizontal: 5,
   },
-  authorText: {
-    fontSize: 12,
-  },
-  textContainer: {
-    marginVertical: 10,
-  },
   itemText: {
     padding: 5,
     fontSize: 20,
     fontWeight: "300",
   },
-  topContainer: {
-    flex: 1,
+  imagePost: {
+    width: 360,
+    height: 250,
+  },
+  middleViewText: {
+    fontWeight: "450",
+    fontSize: 25,
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   middleView: {
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  weatherView: {
-    padding: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
+  profilePic: {
+    height: 60,
+    width: 60,
+    borderRadius: 400 / 2,
   },
-  middleViewText: {
-    fontWeight: "400",
-    fontSize: 25,
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+  textContainer: {
+    marginVertical: 10,
+  },
+  textDisplay: {
+    padding: 20,
+    fontSize: 16,
+  },
+  topContainer: {
+    flex: 1,
   },
   topView: {
     flexDirection: "row",
@@ -398,33 +411,12 @@ const styles = StyleSheet.create({
     width: 350,
     marginHorizontal: 30,
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 15,
   },
-  textDisplay: {
+  weatherView: {
     padding: 20,
-    fontSize: 16,
-  },
-  bottomContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  bottomView: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    marginHorizontal: 10,
-    height: 80,
-  },
-  imageMenu: {
-    flexBasis: "12%",
-  },
-  trigger: {
-    margin: 1,
-    right: 20
-  },
-  imagePost: {
-    width: 100,
-    height: 100
+    justifyContent: "space-between",
   }
 });
 

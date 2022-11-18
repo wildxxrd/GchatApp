@@ -23,3 +23,5 @@ Similar to reddit, this Chat app allows students to interact and speak their min
 # Create an account or sign in
 
 <img width="386" alt="Screenshot 2022-11-18 at 10 41 25 AM" src="https://user-images.githubusercontent.com/92331762/202743861-de5800a3-ac18-4f86-b173-cf4057d07035.png">
+
+Start Posting and have fun!

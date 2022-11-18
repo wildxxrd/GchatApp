@@ -8,6 +8,8 @@ Similar to reddit, this Chat app allows students to interact and speak their min
 - Like and Report posts
 - Weather
 - Sort Trending posts and recent posts
+<img width="363" alt="Screenshot 2022-11-18 at 10 44 46 AM" src="https://user-images.githubusercontent.com/92331762/202744389-b236474d-ef6b-44a9-ad0e-5c441422d79a.png">
+
 
 # How to install
 - download repo

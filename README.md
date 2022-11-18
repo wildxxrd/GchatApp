@@ -19,3 +19,7 @@ Similar to reddit, this Chat app allows students to interact and speak their min
     - w - web
     - Scan QR code (Requires the Expo App on phone)
 <img width="684" alt="Screenshot 2022-11-18 at 10 35 58 AM" src="https://user-images.githubusercontent.com/92331762/202742988-4bb30f76-c8aa-4e64-8572-e14561d15228.png">
+
+# Create an account or sign in
+
+<img width="386" alt="Screenshot 2022-11-18 at 10 41 25 AM" src="https://user-images.githubusercontent.com/92331762/202743861-de5800a3-ac18-4f86-b173-cf4057d07035.png">

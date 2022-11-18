@@ -12,3 +12,8 @@ Similar to reddit, this Chat app allows students to interact and speak their min
 - download repo
 - npm install
 - npm run
+  -List of options
+    i - iPhone(requires apple)
+    a - android (requires Android Studio)
+    w - web
+    Scan QR code (Requires the Expo App on phone)
